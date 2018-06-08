@@ -24,8 +24,8 @@ type TemperatureData struct {
 func (list ProviderList) temperature(city string) float64 {
 
 	// Tạo channel để hứng data và error trả về từ routine
-	chanTemps := make(chan float64)
-	chanErrs := make(chan error)
+	chanTemp := make(chan float64)
+	chanErr := make(chan error)
 
 	// Tạo các routine để thực hiện việc lấy data nhiệt độ từ 3 nguồn:
 	// -Open Weather Map
@@ -36,11 +36,11 @@ func (list ProviderList) temperature(city string) float64 {
 		go func(w wea.WeatherProvider) {
 			temp, err := w.GetTemperature(city)
 			if err != nil {
-				chanErrs <- err
+				chanErr <- err
 				return
 			}
 			// Đẩy dữ liệu nhiệt độ vào channel
-			chanTemps <- temp
+			chanTemp <- temp
 		}(p)
 	}
 
@@ -49,13 +49,13 @@ func (list ProviderList) temperature(city string) float64 {
 	// Lấy dữ liệu nhiệt độ từ các channel (nếu có)
 	for i := 0; i < len(list); i++ {
 		select {
-		case temp := <-chanTemps:
+		case temp := <-chanTemp:
 			if temp > 0 {
 				total += temp
 				k++
 			}
 
-		case err := <-chanErrs:
+		case err := <-chanErr:
 			panic(err)
 		}
 
@@ -68,19 +68,19 @@ func main() {
 
 	// Tạo provider để gọi api openweathermap.org
 	openWeatherMap := wea.OpenWeatherMapProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "b1668a59088cb0267b3cf221325408f7",
 		URL:    "https://api.openweathermap.org/data/2.5/weather?appid=",
 	}
 
 	// Tạo provider để gọi api apixu.com
 	apiXu := wea.ApiXuProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "9da59343499f423cb3d90407180706",
 		URL:    "https://api.apixu.com/v1/current.json?key=",
 	}
 
 	// Tạo provider để gọi api weatherbit.io
 	weatherBit := wea.WeatherBitProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "8da0ecc3363e4b51a39e4827fbcc71c5",
 		URL:    "https://api.weatherbit.io/v2.0/current?key=",
 	}
 
