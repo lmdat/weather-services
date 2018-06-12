@@ -69,19 +69,19 @@ func main() {
 
 	// Tạo provider để gọi api openweathermap.org
 	openWeatherMap := wea.OpenWeatherMapProvider{
-		APIKey: "b1668a59088cb0267b3cf221325408f7",
+		APIKey: "YOUR_API_KEY",
 		URL:    "https://api.openweathermap.org/data/2.5/weather?appid=",
 	}
 
 	// Tạo provider để gọi api apixu.com
 	apiXu := wea.ApiXuProvider{
-		APIKey: "9da59343499f423cb3d90407180706",
+		APIKey: "YOUR_API_KEY",
 		URL:    "https://api.apixu.com/v1/current.json?key=",
 	}
 
 	// Tạo provider để gọi api weatherbit.io
 	weatherBit := wea.WeatherBitProvider{
-		APIKey: "8da0ecc3363e4b51a39e4827fbcc71c5",
+		APIKey: "YOUR_API_KEY",
 		URL:    "https://api.weatherbit.io/v2.0/current?key=",
 	}
 
