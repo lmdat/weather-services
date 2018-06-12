@@ -46,6 +46,7 @@ func (list ProviderList) temperature(city string) float64 {
 
 	total := 0.0
 	k := 0
+
 	// Lấy dữ liệu nhiệt độ từ các channel (nếu có)
 	for i := 0; i < len(list); i++ {
 		select {
@@ -61,26 +62,26 @@ func (list ProviderList) temperature(city string) float64 {
 
 	}
 	// Sau đó tính trung bình nhiệt độ và trả kết quả
-	return total / float64(k)
+	return (total / float64(k))
 }
 
 func main() {
 
 	// Tạo provider để gọi api openweathermap.org
 	openWeatherMap := wea.OpenWeatherMapProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "b1668a59088cb0267b3cf221325408f7",
 		URL:    "https://api.openweathermap.org/data/2.5/weather?appid=",
 	}
 
 	// Tạo provider để gọi api apixu.com
 	apiXu := wea.ApiXuProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "9da59343499f423cb3d90407180706",
 		URL:    "https://api.apixu.com/v1/current.json?key=",
 	}
 
 	// Tạo provider để gọi api weatherbit.io
 	weatherBit := wea.WeatherBitProvider{
-		APIKey: "YOUR_API_KEY",
+		APIKey: "8da0ecc3363e4b51a39e4827fbcc71c5",
 		URL:    "https://api.weatherbit.io/v2.0/current?key=",
 	}
 
@@ -121,6 +122,7 @@ func main() {
 			KelvinTemp:     tempK,
 			FahrenheitTemp: tempF,
 		}
+
 		fmt.Printf("Temperature of %s is %f Celsius, %f Kelvin, %f Fahrenheit\n\n", city, tempC, tempK, tempF)
 
 		w.Header().Set("Content-Type", "application/json")
